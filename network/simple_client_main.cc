@@ -8,7 +8,7 @@ int main ( int argc, int argv[] )
   try
     {
 
-      ClientSocket client_socket ( "localhost", 6666 );
+      ClientSocket client_socket ( "localhost", 8888 );
 
       std::string reply;
       unsigned char key[] = {0x61,0x61};//,0x6E,0x17,0xEF,0xDF,0xD6,0x0D,0xC2,0x87,0xBC,0x03,0x29,0xB4,0x4E,0x3C,'\0'};
