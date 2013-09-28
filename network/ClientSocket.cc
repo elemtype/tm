@@ -11,17 +11,22 @@ ClientSocket::ClientSocket ( std::string host, int port )
       throw SocketException ( "Could not create client socket." );
     }
 
+  if ( ! Socket::bind(0) )
+    {
+      throw SocketException ( "Could not bind to port");
+    }
+
   if ( ! Socket::connect ( host, port ) )
     {
-      throw SocketException ( "Could not bind to port." );
+      throw SocketException ( "Could not connect to port." );
     }
 
 }
 
-
-const ClientSocket& ClientSocket::operator << ( const std::string& s ) const
+/*
+const ClientSocket& ClientSocket::operator << ( const unsigned char* c ) const
 {
-  if ( ! Socket::send ( s ) )
+  if ( ! Socket::send ( c,115 ) )
     {
       throw SocketException ( "Could not write to socket." );
     }
@@ -40,3 +45,4 @@ const ClientSocket& ClientSocket::operator >> ( std::string& s ) const
 
   return *this;
 }
+*/

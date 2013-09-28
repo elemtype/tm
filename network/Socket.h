@@ -15,7 +15,7 @@
 
 const int MAXHOSTNAME = 200;
 const int MAXCONNECTIONS = 5;
-const int MAXRECV = 500;
+const int MAXRECV = 1024;    
 
 class Socket
 {
@@ -33,8 +33,8 @@ class Socket
   bool connect ( const std::string host, const int port );
 
   // Data Transimission
-  bool send ( const std::string ) const;
-  int recv ( std::string& ) const;
+  bool send ( const unsigned char*,int ) const;
+  int recv ( unsigned char*& ) const;
 
 
   void set_non_blocking ( const bool );
@@ -44,7 +44,7 @@ class Socket
  private:
 
   int m_sock;
-  sockaddr_in m_addr;
+  sockaddr_in m_addr_from,m_addr_to;
 
 
 };
