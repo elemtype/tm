@@ -2,6 +2,7 @@
 #define BASE_PACKET_H
 
 #include "../../common/util.h"
+#include "../../common/common.h"
 
 #define MARK02       0x02            //0x02标识，QQ协议以0x02开始
 #define VERSION      0x30,0x18       //TM2013版本号
@@ -9,15 +10,18 @@
 
 class Packet
 {
-  public:
+ public:
   Packet();
   virtual ~Packet();
+ 
+ private:
+  static const byte head;
+  static const byte version[];
+  static const byte end;
 
-  byte head[]    = {MARK02};
-  byte version[] = {VERSION};
-  byte *command  = new byte[2];
+ protected:  
+  byte *command;
   byte *data;
-  byte *sequence = new byte[2];
-  byte end[]     = {MARK03};
-}
+  byte *sequence;
+};
 #endif
