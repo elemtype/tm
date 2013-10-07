@@ -6,7 +6,9 @@
 class PacketIn : public Packet{
 
  public:
-  PacketIn(byte*,byte*);
+  PacketIn();
+  PacketIn(byte*);
+  byte *get_data();
   virtual ~PacketIn();
  private:
   virtual void gen_packet();
