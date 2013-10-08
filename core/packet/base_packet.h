@@ -3,6 +3,7 @@
 
 #include "../../common/util.h"
 #include "../../common/common.h"
+#include "../../crypter/crypter.h"
 
 #define MARK02       0x02            //0x02标识，QQ协议以0x02开始
 #define VERSION      0x30,0x18       //TM2013版本号
@@ -14,12 +15,11 @@ class Packet
   Packet();
   virtual ~Packet();
  
- private:
-  static const byte head;
-  static const byte version[];
-  static const byte end;
-
- protected:  
+ protected:
+  byte *head;
+  byte *version;
+  byte *end; 
+  
   byte *command;
   byte *data;
   byte *sequence;
