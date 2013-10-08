@@ -1,8 +1,8 @@
 #ifndef CRYPTER_H
 #define CRYPTER_H
 
-#include <cstring>
-#include "util.h"
+#include "../common/common.h"
+#include "../common/util.h"
 
 #define TEA_ROUND	0x10		//默认情况下使用16轮TEA加密。
 #define KEY_LENGTH	0x10		//KEY的长度为16位。
