@@ -1,19 +1,94 @@
 #include "touch_packet_in.h"
 
-TouchPacketIn::TouchPacketIn(byte *s):PacketIn(byte *s){
+TouchPacketIn::TouchPacketIn(byte *s){
   
   byte c[] = {0x08,0x25};
-  this->command  = new byte[2];
-  memcpy(this->command, c,2 * sizeof(byte));
-
-}
+  PacketIn::create_packet(c,s);
+} 
 
 TouchPacketIn::~TouchPacketIn(){
-
+  delete[] this->data;
 }
 
 void PacketIn::gen_packet(){
-  data = new byte[115];
+
+  signed long id = 365062521;
+  byte *byte_id = new byte[4];
+  ulong2byte(id,byte_id);
+
+  byte *tea_key = rand_nbyte(16);
+  //pnt_byte(tea_key,16);
+
+  byte token1[] = {0x00,0x18,0x00,0x16,0x00,0x01};
+  byte token2[] = {0x00,0x00,0x41,0x11,0x00,0x00,0x00,0x01,0x00,0x00,0x12,0x91};
+  byte data1[]  = {0x00,0x00,0x00,0x00,0x01,0x14,0x00,0x19,0x01,0x01};
+  byte data2_size[] = {0x00,0x15};
+  byte *data2  = rand_nbyte(0x15);
+
+  byte *plain = new byte[55];
+  memcpy(plain     ,token1,6  * sizeof(byte));
+  memcpy(plain + 6 ,token2,12 * sizeof(byte));
+  memcpy(plain + 18,byte_id,4 * sizeof(byte));
+  memcpy(plain + 22,data1 ,10 * sizeof(byte));
+  memcpy(plain + 32,data2_size, 2 * sizeof(byte));
+  memcpy(plain + 34,data2,21 * sizeof(byte));
+
+  int crypt_size = 0;
+  byte *crypt = NULL;
+  CRYPTER *crpyter = new CRYPTER(tea_key);	
+  crypt_size = crpyter->encrypt(plain,55,crypt);
+  
+  /*
+  pnt_byte(crypt,len);
+  byte *result = NULL;
+  len = crpyter->decrypt(crypt,len,result);
+  pnt_byte(result,len);
+  */
+
+  int offset = 0,size = 115,len = 0;
+  data = new byte[size];
+
+  byte rand15byte[] = {0x03,0x00,0x00,0x00,0x01,0x01,0x01,0x00,0x00,0x66,0x07,0x00,0x00,0x00,0x00}; 
+  
+  offset = 1; 
+  memcpy(this->data + len,this->head,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = 2; 
+  memcpy(this->data + len,this->version,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = 2; 
+  memcpy(this->data + len,this->command,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = 2; 
+  memcpy(this->data + len,this->sequence,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = 4; 
+  memcpy(this->data + len,byte_id,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = 15; 
+  memcpy(this->data + len,rand15byte,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = 16; 
+  memcpy(this->data + len,tea_key,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = crypt_size; 
+  memcpy(this->data + len,crypt,offset * sizeof(byte));
+  len    = len + offset; 
+
+  offset = 1; 
+  memcpy(this->data + len,this->end,offset * sizeof(byte));
+  
+pnt_byte(this->data,size);
+
+  
+/*
   byte d[] = {
    0x02,0x30,0x18,0x08,0x25,0x01,0x4c,0x05,0x21,0x78,0xed,0x03,0x00,0x00,0x00,0x01,
    0x01,0x01,0x00,0x00,0x66,0x07,0x00,0x00,0x00,0x00,0xf5,0x9a,0x7f,0xc1,0xda,0xe4,
@@ -26,4 +101,5 @@ void PacketIn::gen_packet(){
    };
 
   memcpy(this->data,d,115);
+*/
 }

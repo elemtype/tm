@@ -6,7 +6,7 @@
 class TouchPacketIn : public PacketIn{
 
  public:
- TouchPacketIn(byte*):PacketIn(byte*);
+  TouchPacketIn(byte*);
   ~TouchPacketIn();
 };
 
