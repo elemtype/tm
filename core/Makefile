@@ -1,12 +1,15 @@
-OBJECTS=util.o base_packet.o base_packet_in.o touch_packet_in.o Socket.o ClientSocket.o login.o
+OBJECTS=util.o crypter.o base_packet.o base_packet_in.o touch_packet_in.o Socket.o ClientSocket.o login.o
 CC=g++
 CC_FLAG= -Wall #-Werror -Wfloat-equal -Wshadow -Wconversion -Winline
 
 login:$(OBJECTS)
 	$(CC) $(CC_FLAG) ${OBJECTS} -o login
 
-util.o : ../common/util.cc ../common/util.h
+util.o: ../common/util.cc ../common/util.h
 	$(CC) $(CC_FLAG) -c ../common/util.cc
+
+crypter.o: ../crypter/crypter.cc ../crypter/crypter.h
+	$(CC) $(CC_FLAG) -c ../crypter/crypter.cc
 
 base_packet.o: packet/base_packet.cc packet/base_packet.h
 	$(CC) $(CC_FLAG) -c packet/base_packet.cc

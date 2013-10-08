@@ -9,5 +9,6 @@
 
 #include "packet/in/touch_packet_in.h"
 
+//extern unsigned long id;
 
 #endif
