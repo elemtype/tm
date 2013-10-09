@@ -26,7 +26,7 @@ int main(int argc,char **argv)
       unsigned char *reply;
       unsigned char *key = in->get_data();
 
-      reinterpret_cast<char*>(key);
+      //reinterpret_cast<char*>(key);
       //std::string ss(key);
       try
 	{
