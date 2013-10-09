@@ -122,7 +122,7 @@ byte* rand_nbyte(int n)
 {
   byte *b = new byte[n];
   for(int i = 0;i < n;i++){
-    *b = (byte)(rand() & 0xFF);
+    b[i] = (byte)(rand() & 0xFF);
   }
 
   return b;
