@@ -6,9 +6,15 @@ int main(int argc,char **argv)
 {
   try
     {
-      unsigned long id = 86079725;
-      byte *byte_id = new byte[4];
-      ulong2byte(id,byte_id);
+      /*
+  signed long id = 86079725;
+  byte *byte_id = new byte[4];
+  ulong2byte(id,byte_id);
+  pnt_byte(byte_id,4);
+      */
+      unsigned long id = 365063521;
+      byte *tm_id = new byte[4];
+      ulong2byte(id,tm_id);
       //pnt_byte(byte_id,4);
 
       //ClientSocket client_socket ( "183.60.48.174", 8000 );
