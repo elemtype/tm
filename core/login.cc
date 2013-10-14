@@ -25,12 +25,12 @@ int main(int argc,char **argv)
 
       byte sequence[] = {0x00,0x01};
 
-      TouchPacketIn *in = new TouchPacketIn(sequence);
-      in->gen_packet();
+      TouchPacketOut *out = new TouchPacketOut(sequence);
+      out->gen_packet();
             
       int reply_len = 0;
       unsigned char *reply;
-      unsigned char *key = in->get_data();
+      unsigned char *key = out->get_data();
 
       //reinterpret_cast<char*>(key);
       //std::string ss(key);

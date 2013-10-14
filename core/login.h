@@ -7,7 +7,7 @@
 #include "../common/util.h"
 #include "../common/common.h"
 
-#include "packet/in/touch_packet_in.h"
+#include "packet/out/touch_packet_out.h"
 
 //extern unsigned long id;
 
