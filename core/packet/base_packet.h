@@ -3,6 +3,7 @@
 
 #include "../../common/util.h"
 #include "../../common/common.h"
+#include "../../common/global.h"
 #include "../../crypter/crypter.h"
 
 #define MARK02       0x02            //0x02标识，QQ协议以0x02开始
@@ -22,6 +23,7 @@ class Packet
   
   byte *command;
   byte *data;
+  int data_size;
   byte *sequence;
 };
 #endif

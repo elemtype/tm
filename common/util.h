@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 typedef unsigned char byte;			//与网络字节流对应，一个byte占8位，用一个unsigned char表示。
 typedef unsigned long ulong;		//一个ulong占32位，相当于四个byte，用一个unsigned long表示。
@@ -50,5 +51,7 @@ void copybyte(byte *dest,byte *src,byte size);
 byte rand_byte();
 
 byte* rand_nbyte(int n);
+
+string byte2ipaddr(byte *b);
 
 #endif/*UTIL_H*/

@@ -6,8 +6,12 @@
 
 #include "../common/util.h"
 #include "../common/common.h"
+#include "../common/global.h"
 
+#include "parse.h"
 #include "packet/out/touch_packet_out.h"
+#include "packet/in/redirect_packet_in.h"
+#include "packet/in/touch_packet_in.h"
 
 //extern unsigned long id;
 

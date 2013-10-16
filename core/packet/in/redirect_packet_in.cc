@@ -1,6 +1,6 @@
-#include "touch_packet_in.h"
+#include "redirect_packet_in.h"
 
-TouchPacketIn::TouchPacketIn(byte *packet,int size){
+RedirectPacketIn::RedirectPacketIn(byte *packet,int size){
   PacketIn::set_packet(packet,size);
   /*
   int len  = size - 15;
@@ -43,17 +43,19 @@ TouchPacketIn::TouchPacketIn(byte *packet,int size){
   memcpy(this->time,this->plain + 11 + s,4 * sizeof(byte));
   local_ip = new byte[4];
   memcpy(this->local_ip,this->plain + 15 + s,4 * sizeof(byte));
-  local_port = new byte[2];
-  memcpy(this->local_port,this->plain + 19 + s,2 * sizeof(byte));
-  success = new byte[2];
-  memcpy(this->success,this->plain + 19 + s,2 * sizeof(byte));
-
+  data3 = new byte[20];
+  memcpy(this->data3,this->plain + 19 + s,20 * sizeof(byte));
+  server_ip = new byte[4];
+  memcpy(this->server_ip,this->plain + 39 + s,4 * sizeof(byte));
+  sixZero = new byte[6];
+  memcpy(this->sixZero,this->plain + 43 + s,6 * sizeof(byte));
+ 
   delete crpyter;
 
   
 } 
 
-TouchPacketIn::~TouchPacketIn(){
+RedirectPacketIn::~RedirectPacketIn(){
   delete[] event;
   delete[] data1;          //固定0x01 0x12
   delete[] token_size;     //token的长度
@@ -61,8 +63,9 @@ TouchPacketIn::~TouchPacketIn(){
   delete[] data2;          //固定0x00 0x17 0x00 0x0E 0x00 0x01
   delete[] local_ip;       //本地ip
   delete[] time;           //链接时间
-  delete[] local_port;
-  delete[] success;
+  delete[] data3;
+  delete[] server_ip;      //服务器ip
+  delete[] sixZero;
 }
 
 

@@ -6,11 +6,15 @@
 class PacketIn : public Packet{
 
  public:
+  byte *packet;     //收到的包
+
+  byte *id;         //登录ID
+  byte *threeZero;  //存放包体的三个0
+  byte *plain;      //存放解密的明文
+
   PacketIn();
-  void create_packet(byte*,byte*);
-  byte *get_data();
   virtual ~PacketIn();
-  virtual void gen_packet();
+  void set_packet(byte*,int);
 };
 
 #endif

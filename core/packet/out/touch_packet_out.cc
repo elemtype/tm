@@ -11,13 +11,13 @@ TouchPacketOut::~TouchPacketOut(){
 }
 
 void PacketOut::gen_packet(){
-       unsigned long id = 365063521;
-      byte *tm_id = new byte[4];
-      ulong2byte(id,tm_id);
+  //unsigned long id = 365063521;
+  //byte *tm_id = new byte[4];
+  //ulong2byte(id,tm_id);
   //extern byte *tm_id;
-  byte *tea_key = rand_nbyte(16);
+  //byte *g_key = rand_nbyte(16);
   //byte tea_key[] = {0xf5,0x9a,0x7f,0xc1,0xda,0xe4,0xf4,0xaa,0x86,0xeb,0xfe,0x6d,0xda,0x5c,0xa7,0xbc};
-  pnt_byte(tea_key,16);
+  pnt_byte(g_key,16);
 
   byte token1[] = {0x00,0x18,0x00,0x16,0x00,0x01};
   byte token2[] = {0x00,0x00,0x04,0x11,0x00,0x00,0x00,0x01,0x00,0x00,0x12,0xD8};
@@ -30,14 +30,14 @@ void PacketOut::gen_packet(){
   byte *plain = new byte[55];
   memcpy(plain     ,token1,6  * sizeof(byte));
   memcpy(plain + 6 ,token2,12 * sizeof(byte));
-  memcpy(plain + 18,tm_id,4 * sizeof(byte));
+  memcpy(plain + 18,g_id,4 * sizeof(byte));
   memcpy(plain + 22,data1 ,10 * sizeof(byte));
   memcpy(plain + 32,data2_size, 2 * sizeof(byte));
   memcpy(plain + 34,data2,21 * sizeof(byte));
 
   int crypt_size = 0;
   byte *crypt = NULL;
-  CRYPTER *crpyter = new CRYPTER(tea_key);	
+  CRYPTER *crpyter = new CRYPTER(g_key);	
   crypt_size = crpyter->encrypt(plain,55,crypt);
   //std::cout << crypt_size;//72
  
@@ -82,7 +82,7 @@ void PacketOut::gen_packet(){
   len    = len + offset; 
 
   offset = 4; 
-  memcpy(this->data + len,tm_id,offset * sizeof(byte));
+  memcpy(this->data + len,g_id,offset * sizeof(byte));
   len    = len + offset; 
 
   offset = 15; 
@@ -90,7 +90,7 @@ void PacketOut::gen_packet(){
   len    = len + offset; 
 
   offset = 16; 
-  memcpy(this->data + len,tea_key,offset * sizeof(byte));
+  memcpy(this->data + len,g_key,offset * sizeof(byte));
   len    = len + offset; 
 
   offset = crypt_size; 

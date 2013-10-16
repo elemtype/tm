@@ -127,3 +127,14 @@ byte* rand_nbyte(int n)
 
   return b;
 }
+
+
+string byte2ipaddr(byte *bb){
+  stringstream strStream;  
+  int a = bb[0];  
+  int b = bb[1]; 
+  int c = bb[2]; 
+  int d = bb[3]; 
+  strStream << a << "." << b << "." << c << "." << d; 
+  return strStream.str(); 
+}
