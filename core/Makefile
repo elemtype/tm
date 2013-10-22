@@ -9,7 +9,7 @@ else
 endif
 
 OBJECTS=util.o crypter.o parse.o base_packet.o base_packet_out.o touch_packet_out.o base_packet_in.o \
-        redirect_packet_in.o touch_packet_in.o Socket.o ClientSocket.o login.o
+        redirect_packet_in.o touch_packet_in.o logon_packet_out.o Socket.o ClientSocket.o login.o
 CC=g++
 #CC_FLAG= -Wall #-Werror -Wfloat-equal -Wshadow -Wconversion -Winline
 
@@ -42,6 +42,9 @@ redirect_packet_in.o: packet/in/redirect_packet_in.cc packet/in/redirect_packet_
 
 touch_packet_in.o: packet/in/touch_packet_in.cc packet/in/touch_packet_in.h
 	$(CC) $(CC_FLAG) -c packet/in/touch_packet_in.cc
+
+logon_packet_out.o: packet/out/logon_packet_out.cc packet/out/logon_packet_out.h
+	$(CC) $(CC_FLAG) -c packet/out/logon_packet_out.cc
 
 Socket.o: ../network/Socket.cc ../network/Socket.h
 	$(CC) $(CC_FLAG) -c ../network/Socket.cc
