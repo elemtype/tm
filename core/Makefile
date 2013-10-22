@@ -1,9 +1,20 @@
-OBJECTS=util.o crypter.o parse.o base_packet.o base_packet_out.o touch_packet_out.o base_packet_in.o redirect_packet_in.o touch_packet_in.o Socket.o ClientSocket.o login.o
+mode = debug
+
+ifeq ($(mode),debug)
+  CC_FLAG= -Wall -g -DDEBUG
+  OUTPUT = login_debug	
+else
+  CC_FLAG= -Wall
+  OUTPUT = login_release
+endif
+
+OBJECTS=util.o crypter.o parse.o base_packet.o base_packet_out.o touch_packet_out.o base_packet_in.o \
+        redirect_packet_in.o touch_packet_in.o Socket.o ClientSocket.o login.o
 CC=g++
-CC_FLAG= -Wall #-Werror -Wfloat-equal -Wshadow -Wconversion -Winline
+#CC_FLAG= -Wall #-Werror -Wfloat-equal -Wshadow -Wconversion -Winline
 
 login:$(OBJECTS)
-	$(CC) $(CC_FLAG) ${OBJECTS} -o login
+	$(CC) $(CC_FLAG) ${OBJECTS} -o $(OUTPUT)
 
 util.o: ../common/util.cc ../common/util.h
 	$(CC) $(CC_FLAG) -c ../common/util.cc
@@ -42,4 +53,4 @@ login.o: login.cc login.h
 	$(CC) $(CC_FLAG) -c login.cc 
 
 clean:
-	rm login *.o
+	rm $(OUTPUT) *.o
