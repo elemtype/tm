@@ -3,6 +3,8 @@
 byte *g_id  = new byte[4];
 //byte *g_key = new byte[16];
 byte *g_key = rand_nbyte(16);
+byte *g_0825_token = new byte[0x38];
+byte *g_local_ip = new byte[0x38];
 int g_sequence = 0x01;
 
 int main(int argc,char **argv)
@@ -85,7 +87,15 @@ int main(int argc,char **argv)
       pnt_byte(tpin->token,(int)tpin->token_size[1]);
       pnt_byte(tpin->time,4);
 
+      memcpy(g_0825_token,tpin->token,(int)tpin->token_size[1]);
+      memcpy(g_local_ip,tpin->local_ip,4 * sizeof(byte));
+
       delete parse;
+      delete out;
+
+      
+      LogonPacketOut *lpout = new LogonPacketOut(sequence);
+      lpout->gen_packet();
       //std::cout << "We received this response from the server:\n\"" << reply << "\"\n";;
 
     }

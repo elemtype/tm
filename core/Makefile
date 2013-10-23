@@ -1,10 +1,10 @@
 mode = debug
 
 ifeq ($(mode),debug)
-  CC_FLAG= -Wall -g -DDEBUG
+  CC_FLAG= -Wall -g -DDEBUG -lcrypto
   OUTPUT = login_debug	
 else
-  CC_FLAG= -Wall
+  CC_FLAG= -Wall -lcrypto
   OUTPUT = login_release
 endif
 

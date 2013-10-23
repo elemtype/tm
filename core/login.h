@@ -12,6 +12,7 @@
 #include "packet/out/touch_packet_out.h"
 #include "packet/in/redirect_packet_in.h"
 #include "packet/in/touch_packet_in.h"
+#include "packet/out/logon_packet_out.h"
 
 //extern unsigned long id;
 
