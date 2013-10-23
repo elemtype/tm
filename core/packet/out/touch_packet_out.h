@@ -8,6 +8,8 @@ class TouchPacketOut : public PacketOut{
  public:
   TouchPacketOut(byte*);
   ~TouchPacketOut();
+
+  virtual void gen_packet();
 };
 
 #endif

@@ -10,7 +10,7 @@ class PacketOut : public Packet{
   void create_packet(byte*,byte*);
   byte *get_data();
   virtual ~PacketOut();
-  virtual void gen_packet();
+  virtual void gen_packet(){};
 };
 
 #endif

@@ -10,7 +10,7 @@ TouchPacketOut::~TouchPacketOut(){
   delete[] this->data;
 }
 
-void PacketOut::gen_packet(){
+void TouchPacketOut::gen_packet(){
   //unsigned long id = 365063521;
   //byte *tm_id = new byte[4];
   //ulong2byte(id,tm_id);
