@@ -1,10 +1,10 @@
 #include "login.h"
 
 byte *g_id  = new byte[4];
-//byte *g_key = new byte[16];
+byte *g_0825_data = new byte[29];
 byte *g_key = rand_nbyte(16);
 byte *g_0825_token = new byte[0x38];
-byte *g_local_ip = new byte[0x38];
+byte *g_local_ip = new byte[4];
 int g_sequence = 0x01;
 
 int main(int argc,char **argv)
@@ -60,7 +60,7 @@ int main(int argc,char **argv)
       delete parse;
       delete out;
 
-      
+      sequence[1] = 0x02;
       out = new TouchPacketOut(sequence);
       out->gen_packet();
             
@@ -93,9 +93,19 @@ int main(int argc,char **argv)
       delete parse;
       delete out;
 
-      
+      sequence[0] = 0x0B;
+      sequence[1] = 0x01;
       LogonPacketOut *lpout = new LogonPacketOut(sequence);
       lpout->gen_packet();
+
+      key = out->get_data();
+      reply_len = 0;
+      try
+	{
+	  socket->send(key,499);
+          //reply_len = socket->recv(reply);
+	}
+      catch ( SocketException& ) {}
       //std::cout << "We received this response from the server:\n\"" << reply << "\"\n";;
 
     }
