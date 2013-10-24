@@ -24,6 +24,8 @@ void TouchPacketOut::gen_packet(){
   byte data1[]  = {0x00,0x00,0x00,0x00,0x01,0x14,0x00,0x19,0x01,0x01};
   byte data2_size[] = {0x00,0x15};
   byte *data2  = rand_nbyte(0x15);
+
+  
   //byte data2[] = {0x02,0xEE,0x33,0x84,0xE6,0xB7,0x9C,0x6B,0x85,0x05,0xA1,0x5C,0xB8,0x6A,0x23,0x5A,0x7F,0xEC,0x54,0x02,0x5A}; 
   //pnt_byte(data2,21);
 
@@ -34,6 +36,11 @@ void TouchPacketOut::gen_packet(){
   memcpy(plain + 22,data1 ,10 * sizeof(byte));
   memcpy(plain + 32,data2_size, 2 * sizeof(byte));
   memcpy(plain + 34,data2,21 * sizeof(byte));
+
+  memcpy(g_0825_data       ,data1 + 4 , 6 * sizeof(byte));
+  memcpy(g_0825_data +  6  ,data2_size, 2 * sizeof(byte));
+  memcpy(g_0825_data +  8  ,data2     ,21 * sizeof(byte));
+
 
   int crypt_size = 0;
   byte *crypt = NULL;
