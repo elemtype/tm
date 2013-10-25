@@ -26,7 +26,9 @@ TouchPacketIn::TouchPacketIn(byte *packet,int size){
 
   CRYPTER *crpyter = new CRYPTER(g_key);	
   int l = crpyter->decrypt(this->data,this->data_size,this->plain);
+  std::cout << "touch_packet_in_plain_start" << std::endl;
   pnt_byte(this->plain,l);
+  std::cout << "touch_packet_in_plain_end" << std::endl;
 
   event = new byte[1];
   memcpy(this->event,this->plain,1 * sizeof(byte));
@@ -37,7 +39,7 @@ TouchPacketIn::TouchPacketIn(byte *packet,int size){
   int s = (int)token_size[1];
   token = new byte[s];
   memcpy(this->token,this->plain + 5,s * sizeof(byte));
-  memcpy(g_0825_token,this->token,s*sizeof(byte));
+  //memcpy(g_0825_token,this->token,s*sizeof(byte));
   data2 = new byte[6]; 
   memcpy(this->data2,this->plain + 5 + s,6 * sizeof(byte));
   time  = new byte[4];
