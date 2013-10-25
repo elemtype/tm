@@ -15,11 +15,6 @@ void LogonPacketOut::gen_packet(){
   byte rand15byte[] = {0x03,0x00,0x00,0x00,0x01,0x01,0x01,0x00,0x00,0x66,0x07,0x00,0x00,0x00,0x00}; //15个随机数
   byte *tea_key     = rand_nbyte(16); //0826 随机生成的tea key
 
-  memcpy(g_0826_key,tea_key,16 * sizeof(byte));
-  std::cout << "g_0826_key_start" << std::endl;
-  pnt_byte(g_0826_key,16);
-  std::cout << "g_0826_key_end" << std::endl;
-
   byte data1[]      = {0x01,0x12};
   byte g_0825_token_size[] = {0x00,0x38};
   byte data2[]      = {0x00,0x05,0x00,0x06,0x00,0x02}; //00 05 00 06 00 02
@@ -39,6 +34,11 @@ void LogonPacketOut::gen_packet(){
   byte plain_120_data10[] = {0x00,0x10};
   byte plain_120_data11[] = {0x31,0x12,0xA2,0xDE,0x42,0x8E,0x22,0x45,0x8D,0x2C,0xB7,0x9D,0xD4,0xFA,0xA5,0x41};
   byte *plain_120_data12 = rand_nbyte(16);
+
+  memcpy(g_0826_key,plain_120_data12,16 * sizeof(byte));
+  std::cout << "g_0826_key_start" << std::endl;
+  pnt_byte(g_0826_key,16);
+  std::cout << "g_0826_key_end" << std::endl;
 
   string pswd = "elemtype";
   //unsigned char* d = (unsigned char*)(pswd.c_str());
@@ -92,7 +92,7 @@ void LogonPacketOut::gen_packet(){
   std::cout << "g_0826_token_start" << std::endl;
   memcpy(g_0826_token,rand56byte,0x38 * sizeof(byte));
   pnt_byte(g_0826_token,0x38);
-  std::cout << "g_0826_token_s" << std::endl;
+  std::cout << "g_0826_token_end" << std::endl;
   byte data12[]={0x00,0x14};
   byte data13[] = {0x60,0x4D,0x48,0xAD,0x1A,0x65,0x16,0x6C,0xA6,0x0F,0x86,0x48,0x97,0x7B,0xD2,0x85,0x31,0x60,0x73,0xFE};//rand_nbyte(20);
   byte data14[]={0x00,0x1A};

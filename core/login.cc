@@ -11,12 +11,14 @@ int g_sequence = 0x01;
 
 int main(int argc,char **argv)
 {
+
+  byte redirect_flag = 0xEF;    //需要重定向
   try
     {
       unsigned long id = 365063521;
       
       ulong2byte(id,g_id);
-      //pnt_byte(byte_id,4);
+      //pnt_byte(g_id,4);
 
       //ClientSocket client_socket ( "183.60.48.174", 8000 );
       Socket *socket = new Socket();
@@ -26,48 +28,54 @@ int main(int argc,char **argv)
 
       byte sequence[] = {0x00,0x01};
 
-      TouchPacketOut *out = new TouchPacketOut(sequence);
-      out->gen_packet();
-            
-      int reply_len = 0;
-      unsigned char *reply;
-      unsigned char *key = out->get_data();
+      unsigned char *reply = NULL;
+      unsigned char *key   = NULL;
 
-      //reinterpret_cast<char*>(key);
-      //std::string ss(key);
-      try
+      int reply_len = 0;
+
+      while(redirect_flag == 0xEF)
+      {
+        TouchPacketOut *out = new TouchPacketOut(sequence);
+        out->gen_packet();
+            
+        key = out->get_data();
+
+        try
 	{
-	  //socket << key;//"Test message.";
-	  //socket >> reply;
           socket->send(key,115);
           reply_len = socket->recv(reply);
 	}
-      catch ( SocketException& ) {}
+        catch ( SocketException& ) {}
 
+        pnt_byte(reply,reply_len);
 
-      pnt_byte(reply,reply_len);
+        Parse *parse = new Parse();
+        parse->set_packet(reply,reply_len);
+        
+        if(parse->event_command[0] == 0xEF)
+        {
+          RedirectPacketIn *rpin = new RedirectPacketIn(reply,reply_len);
+          pnt_byte(rpin->time,4);
+          pnt_byte(rpin->server_ip,4);
+          pnt_byte(rpin->local_ip,4);
 
-      Parse *parse = new Parse();
-      parse->set_packet(reply,reply_len);
-      pnt_byte(parse->event_command,1);
-      
-      RedirectPacketIn *rpin = new RedirectPacketIn(reply,reply_len);
-      pnt_byte(rpin->time,4);
-      pnt_byte(rpin->server_ip,4);
-      pnt_byte(rpin->local_ip,4);
+          string redirect_ip = byte2ipaddr(rpin->server_ip);
+          socket->connect(redirect_ip, 8000);
+        }else
+	{
+          redirect_flag = 0x00;
+	}  
 
-      string redirect_ip = byte2ipaddr(rpin->server_ip);
-      socket->connect(redirect_ip, 8000);
-      
-      delete parse;
-      delete out;
-
-      sequence[1] = 0x02;
-      out = new TouchPacketOut(sequence);
-      out->gen_packet();
+        delete parse;
+        delete out;
+      }
+      /*
+        sequence[1] = 0x02;
+        out = new TouchPacketOut(sequence);
+        out->gen_packet();
             
-      reply_len = 0;
-      key = out->get_data();
+        reply_len = 0;
+        key = out->get_data();
 
       //reinterpret_cast<char*>(key);
       //std::string ss(key);
@@ -85,6 +93,7 @@ int main(int argc,char **argv)
       parse = new Parse();
       parse->set_packet(reply,reply_len);
       pnt_byte(parse->event_command,1);
+      */
       
       TouchPacketIn *tpin = new TouchPacketIn(reply,reply_len);
       pnt_byte(tpin->token,(int)tpin->token_size[1]);
@@ -93,25 +102,23 @@ int main(int argc,char **argv)
       memcpy(g_0825_token,tpin->token,(int)tpin->token_size[1]);
       memcpy(g_local_ip,tpin->local_ip,4 * sizeof(byte));
 
-      delete parse;
-      delete out;
+      //delete parse;
+      //delete out;
 
       sequence[0] = 0x0B;
       sequence[1] = 0x01;
       LogonPacketOut *lpout = new LogonPacketOut(sequence);
       lpout->gen_packet();
 
-      key = out->get_data();
+      key = lpout->get_data();
       reply_len = 0;
       try
 	{
 	  socket->send(key,499);
           reply_len = socket->recv(reply);
-          pnt_byte(reply,reply_len);
-	}
+        }  
       catch ( SocketException& ) {}
-      //std::cout << "We received this response from the server:\n\"" << reply << "\"\n";;
-
+      LogonPacketIn *lpin = new LogonPacketIn(reply,reply_len);
     }
   catch ( SocketException& e )
     {
