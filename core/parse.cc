@@ -40,9 +40,9 @@ void Parse::set_packet(byte *packet,int size){
   int l = crpyter->decrypt(this->data,len,result);
   pnt_byte(result,l);
 
-  event_command = new byte[2];
-  memcpy(this->event_command,result,2 * sizeof(byte));
-
+  event_command = new byte[1];
+  memcpy(this->event_command,result,1 * sizeof(byte));
+  //pnt_byte(this->event_command,1);
   delete crpyter;
   
 

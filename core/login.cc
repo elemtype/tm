@@ -4,6 +4,8 @@ byte *g_id  = new byte[4];
 byte *g_0825_data = new byte[29];
 byte *g_key = rand_nbyte(16);
 byte *g_0825_token = new byte[0x38];
+byte *g_0826_token = new byte[0x38];
+byte *g_0826_key = new byte[4];
 byte *g_local_ip = new byte[4];
 int g_sequence = 0x01;
 
@@ -47,6 +49,7 @@ int main(int argc,char **argv)
 
       Parse *parse = new Parse();
       parse->set_packet(reply,reply_len);
+      pnt_byte(parse->event_command,1);
       
       RedirectPacketIn *rpin = new RedirectPacketIn(reply,reply_len);
       pnt_byte(rpin->time,4);
@@ -56,7 +59,6 @@ int main(int argc,char **argv)
       string redirect_ip = byte2ipaddr(rpin->server_ip);
       socket->connect(redirect_ip, 8000);
       
-      //std::cout << std::hex << parse->event_command;
       delete parse;
       delete out;
 
@@ -82,6 +84,7 @@ int main(int argc,char **argv)
       pnt_byte(reply,reply_len);
       parse = new Parse();
       parse->set_packet(reply,reply_len);
+      pnt_byte(parse->event_command,1);
       
       TouchPacketIn *tpin = new TouchPacketIn(reply,reply_len);
       pnt_byte(tpin->token,(int)tpin->token_size[1]);
@@ -103,7 +106,8 @@ int main(int argc,char **argv)
       try
 	{
 	  socket->send(key,499);
-          //reply_len = socket->recv(reply);
+          reply_len = socket->recv(reply);
+          pnt_byte(reply,reply_len);
 	}
       catch ( SocketException& ) {}
       //std::cout << "We received this response from the server:\n\"" << reply << "\"\n";;
