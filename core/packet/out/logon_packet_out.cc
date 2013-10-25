@@ -14,6 +14,12 @@ LogonPacketOut::~LogonPacketOut(){
 void LogonPacketOut::gen_packet(){
   byte rand15byte[] = {0x03,0x00,0x00,0x00,0x01,0x01,0x01,0x00,0x00,0x66,0x07,0x00,0x00,0x00,0x00}; //15个随机数
   byte *tea_key     = rand_nbyte(16); //0826 随机生成的tea key
+
+  memcpy(g_0826_key,tea_key,16 * sizeof(byte));
+  std::cout << "g_0826_key_start" << std::endl;
+  pnt_byte(g_0826_key,16);
+  std::cout << "g_0826_key_end" << std::endl;
+
   byte data1[]      = {0x01,0x12};
   byte g_0825_token_size[] = {0x00,0x38};
   byte data2[]      = {0x00,0x05,0x00,0x06,0x00,0x02}; //00 05 00 06 00 02
@@ -25,7 +31,8 @@ void LogonPacketOut::gen_packet(){
   byte plain_120_data3[] = {0x00};
   byte plain_120_data4[] = {0x00,0x04,0x11,0x00,0x00,0x00,0x01,0x00,0x00,0x12,0xD8};
   byte plain_120_data5[] = {0x00,0x00,0x00};
-  byte plain_120_data6[] = {0x50,0xF2,0xC9,0x3F};  
+  byte *plain_120_data6  = new byte[4];//{0x50,0xF2,0xC9,0x3F};
+  time_byte(plain_120_data6);  
   byte plain_120_data7[] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
   byte plain_120_data8[] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00};
   byte plain_120_data9[] = {0x00};
@@ -58,9 +65,9 @@ void LogonPacketOut::gen_packet(){
   
   unsigned char fourZero[4] = {0x00,0x00,0x00,0x00};
   unsigned char md5_code[24];
-  memcpy(md5_code,md5,16 * sizeof(unsigned char));
-  memcpy(md5_code + 16,fourZero,4 * sizeof(unsigned char));
-  memcpy(md5_code + 20,g_id,4 * sizeof(unsigned char));
+  memcpy(md5_code     ,md5     ,16 * sizeof(unsigned char));
+  memcpy(md5_code + 16,fourZero, 4 * sizeof(unsigned char));
+  memcpy(md5_code + 20,g_id    , 4 * sizeof(unsigned char));
   unsigned char md5md5[16];
   MD5(md5_code,24,md5md5);
   //pnt_byte(md5md5,16);
@@ -78,11 +85,14 @@ void LogonPacketOut::gen_packet(){
   byte data6[] = {0x00,0x00,0x00,0x00,0x01,0x03,0x00,0x14,0x00,0x01};
   byte data7[] = {0x00,0x10};
   byte data8[] = {0xCD,0xC8,0xCB,0x6F,0xE1,0xDA,0x3B,0xED,0x9E,0xFE,0xEB,0x85,0xAC,0x9F,0x58,0xD7};
-  //todo:01 14 00 19 01 01 00 15 03 2A 37 9C 8E 0B 74 A2 F1 E5 47 56 0B 02 CE 2C D0 0A 83 9E D2 //还是0825里面的
   byte data9[] = {0x01,0x02,0x00,0x62,0x00,0x01};
   byte *data10 = rand_nbyte(16);
   byte data11[]={0x00,0x38};  
   byte *rand56byte  = rand_nbyte(0x38);
+  std::cout << "g_0826_token_start" << std::endl;
+  memcpy(g_0826_token,rand56byte,0x38 * sizeof(byte));
+  pnt_byte(g_0826_token,0x38);
+  std::cout << "g_0826_token_s" << std::endl;
   byte data12[]={0x00,0x14};
   byte data13[] = {0x60,0x4D,0x48,0xAD,0x1A,0x65,0x16,0x6C,0xA6,0x0F,0x86,0x48,0x97,0x7B,0xD2,0x85,0x31,0x60,0x73,0xFE};//rand_nbyte(20);
   byte data14[]={0x00,0x1A};
@@ -130,9 +140,9 @@ void LogonPacketOut::gen_packet(){
   byte *crypt = NULL;
   crpyter = new CRYPTER(tea_key);	
   crypt_size = crpyter->encrypt(plain,443,crypt);
-  std::cout << crypt_size << std::endl;
-  pnt_byte(plain,443);
-  pnt_byte(crypt,crypt_size);
+  //std::cout << crypt_size << std::endl;
+  //pnt_byte(plain,443);
+  //pnt_byte(crypt,crypt_size);
   delete crpyter;
 
   int offset = 0,size = 499,len = 0;
@@ -174,7 +184,4 @@ void LogonPacketOut::gen_packet(){
   memcpy(this->data + len,this->end,offset * sizeof(byte));
   
   pnt_byte(this->data,size);
-  
-   
-  //byte,0xtoken1[],0x=,0x{0x00,0x18,0x00,0x16,0x00,0x01}//
 }
