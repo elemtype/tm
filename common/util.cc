@@ -138,3 +138,12 @@ string byte2ipaddr(byte *bb){
   strStream << a << "." << b << "." << c << "." << d; 
   return strStream.str(); 
 }
+
+void time_byte(byte *t){
+  //t = new byte[4];
+  time_t tt;
+  tt = time(0);
+  ulong2byte((unsigned long)tt,t);
+  //std::cout << "ssssssss" << std::endl;
+  //pnt_byte(t,4);
+}

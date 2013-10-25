@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <time.h>
 
 typedef unsigned char byte;			//与网络字节流对应，一个byte占8位，用一个unsigned char表示。
 typedef unsigned long ulong;		//一个ulong占32位，相当于四个byte，用一个unsigned long表示。
@@ -53,5 +54,7 @@ byte rand_byte();
 byte* rand_nbyte(int n);
 
 string byte2ipaddr(byte *b);
+
+void time_byte(byte *t);
 
 #endif/*UTIL_H*/
