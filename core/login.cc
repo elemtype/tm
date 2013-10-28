@@ -6,6 +6,8 @@ byte *g_key = rand_nbyte(16);
 byte *g_0825_token = new byte[0x38];
 byte *g_0826_token = new byte[0x38];
 byte *g_0826_key = new byte[4];
+byte *g_0828_key_0 = new byte[4];
+byte *g_0828_key_1 = new byte[4];
 byte *g_local_ip = new byte[4];
 int g_sequence = 0x01;
 
