@@ -31,6 +31,22 @@ LogonPacketIn::LogonPacketIn(byte *packet,int size){
   std::cout << "logon_packet_in_plain_end" << std::endl;
 
 
+  memcpy(g_0828_key_0,this->plain + 7,16 * sizeof(byte));
+  std::cout << "g_0828_key_0_start" << std::endl;
+  pnt_byte(g_0828_key_0,16);
+  std::cout << "g_0828_key_0_end" << std::endl;
+
+  std::cout << "g_0826_token_start" << std::endl;
+  memcpy(g_0826_token,this->plain + 25,0x38 * sizeof(byte));
+  pnt_byte(g_0826_token,0x38);
+  std::cout << "g_0826_token_end" << std::endl;
+
+  memcpy(g_0828_key_1,this->plain + 16  * 15 - 5,16 * sizeof(byte));
+  std::cout << "g_0828_key_1_start" << std::endl;
+  pnt_byte(g_0828_key_1,16);
+  std::cout << "g_0828_key_1_end" << std::endl;
+
+
   delete crpyter;
 
   
