@@ -147,3 +147,22 @@ void time_byte(byte *t){
   //std::cout << "ssssssss" << std::endl;
   //pnt_byte(t,4);
 }
+
+size_t formatString(const string &str)
+{
+    vector<string> vec;
+    string::size_type currPos = 0, prevPos = 0;
+    while ((currPos = str.find(' ', prevPos)) != string::npos) {
+        string b(str.substr(prevPos, currPos - prevPos));
+        vec.push_back(b);
+        prevPos = currPos + 1;
+    }
+    if (prevPos < str.size()) {
+        string b(str.substr(prevPos));
+        vec.push_back(b);
+    }
+    typedef vector<string>::size_type sz_type;
+    sz_type size = vec.size();
+    return size;
+}
+

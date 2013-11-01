@@ -57,4 +57,6 @@ string byte2ipaddr(byte *b);
 
 void time_byte(byte *t);
 
+size_t formatString(const string &str);
+
 #endif/*UTIL_H*/
