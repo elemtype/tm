@@ -139,6 +139,31 @@ string byte2ipaddr(byte *bb){
   return strStream.str(); 
 }
 
+void ipaddr2byte(string s,byte *b){
+  std::string pattern = ".";
+  std::string::size_type pos;
+  s = s.append(".");
+  int size = s.size();
+  int index = 0;
+
+  for(int i = 0; i < size; i++)
+  {
+    pos = s.find(pattern,i);
+    if(pos < size)
+    {
+      string subs = s.substr(i,pos - i);
+      //std::cout << subs << endl;
+      int p = 0;
+      stringstream ss;
+      ss << subs;
+      ss >> p;
+      ss.clear();
+      b[index++] = p;
+      i = pos + pattern.size() - 1;
+    }
+  }
+}
+
 void time_byte(byte *t){
   //t = new byte[4];
   time_t tt;

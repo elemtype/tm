@@ -55,6 +55,8 @@ byte* rand_nbyte(int n);
 
 string byte2ipaddr(byte *b);
 
+void ipaddr2byte(string s,byte *b);
+
 void time_byte(byte *t);
 
 size_t formatString(const string &str);
