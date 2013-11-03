@@ -9,6 +9,7 @@ byte *g_0826_key = new byte[4];
 byte *g_0828_key_0 = new byte[4];
 byte *g_0828_key_1 = new byte[4];
 byte *g_local_ip = new byte[4];
+byte *g_server_ip = new byte[4];
 int g_sequence = 0x01;
 
 int main(int argc,char **argv)
@@ -18,6 +19,7 @@ int main(int argc,char **argv)
   try
     {
       unsigned long id = 365063521;
+      string server_ip = "183.60.48.174";
       
       ulong2byte(id,g_id);
       //pnt_byte(g_id,4);
@@ -26,7 +28,10 @@ int main(int argc,char **argv)
       Socket *socket = new Socket();
       socket->create();
       socket->bind(0);
-      socket->connect("183.60.48.174", 8000);
+      socket->connect(server_ip, 8000);
+
+      ipaddr2byte(server_ip,g_server_ip);
+      pnt_byte(g_server_ip,4);
 
       byte sequence[] = {0x00,0x01};
 
