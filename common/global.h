@@ -13,6 +13,7 @@ extern byte *g_0828_key_0;
 extern byte *g_0828_key_1;
 extern byte *g_local_ip;
 extern byte *g_server_ip;
+extern byte *g_crc32;
 extern int  g_sequence;
 
 #endif
