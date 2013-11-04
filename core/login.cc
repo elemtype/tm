@@ -10,6 +10,7 @@ byte *g_0828_key_0 = new byte[4];
 byte *g_0828_key_1 = new byte[4];
 byte *g_local_ip = new byte[4];
 byte *g_server_ip = new byte[4];
+byte *g_crc32 = new byte[52];
 int g_sequence = 0x01;
 
 int main(int argc,char **argv)
@@ -126,6 +127,22 @@ int main(int argc,char **argv)
         }  
       catch ( SocketException& ) {}
       LogonPacketIn *lpin = new LogonPacketIn(reply,reply_len);
+
+
+      sequence[0] = 0x0B;
+      sequence[1] = 0x01;
+      LoginPacketOut *lipout = new LoginPacketOut(sequence);
+      lipout->gen_packet();
+
+      key = lipout->get_data();
+      reply_len = 0;
+      try
+	{
+	  socket->send(key,499);
+          reply_len = socket->recv(reply);
+        }  
+      catch ( SocketException& ) {}
+
     }
   catch ( SocketException& e )
     {
