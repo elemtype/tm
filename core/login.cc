@@ -1,23 +1,24 @@
 #include "login.h"
 
-byte *g_id  = new byte[4];
-byte *g_0825_data = new byte[29];
-byte *g_key = rand_nbyte(16);
-byte *g_0825_token = new byte[0x38];
-byte *g_0826_token = new byte[0x38];
+byte *g_id           = new byte[4];
+byte *g_0825_data    = new byte[29];
+byte *g_key          = rand_nbyte(16);
+byte *g_0825_token   = new byte[0x38];
+byte *g_0826_token   = new byte[0x38];
 byte *g_0826_token_1 = new byte[0x78];
-byte *g_0826_key = new byte[4];
-byte *g_0828_key_0 = new byte[4];
-byte *g_0828_key_1 = new byte[4];
-byte *g_local_ip = new byte[4];
-byte *g_server_ip = new byte[4];
-byte *g_crc32 = new byte[52];
-int g_sequence = 0x01;
+byte *g_0826_key     = new byte[4];
+byte *g_0828_key_0   = new byte[4];
+byte *g_0828_key_1   = new byte[4];
+byte *g_local_ip     = new byte[4];
+byte *g_server_ip    = new byte[4];
+byte *g_crc32        = new byte[52];
+byte *g_session_key  = new byte[16];
+int g_sequence       = 0x01;
 
 int main(int argc,char **argv)
 {
 
-  byte redirect_flag = 0xEF;    //需要重定向
+  byte redirect_flag = 0xFE;    //需要重定向
   try
     {
       unsigned long id = 365063521;
@@ -42,7 +43,7 @@ int main(int argc,char **argv)
 
       int reply_len = 0;
 
-      while(redirect_flag == 0xEF)
+      while(redirect_flag == 0xFE)
       {
         TouchPacketOut *out = new TouchPacketOut(sequence);
         out->gen_packet();
@@ -110,7 +111,7 @@ int main(int argc,char **argv)
       pnt_byte(tpin->token,(int)tpin->token_size[1]);
       pnt_byte(tpin->time,4);
 
-      memcpy(g_0825_token,tpin->token,(int)tpin->token_size[1]);
+      memcpy(g_0825_token,tpin->token,(int)tpin->token_size[1] * sizeof(byte));
       memcpy(g_local_ip,tpin->local_ip,4 * sizeof(byte));
 
       //delete parse;
@@ -134,6 +135,13 @@ int main(int argc,char **argv)
 
       sequence[0] = 0x0B;
       sequence[1] = 0x02;
+      
+      /*
+      byte a[4];
+      ulong2byte(8000,a);
+      pnt_byte(a,4);
+      */
+
       LoginPacketOut *lipout = new LoginPacketOut(sequence);
       lipout->gen_packet();
 
@@ -145,7 +153,7 @@ int main(int argc,char **argv)
           reply_len = socket->recv(reply);
         }  
       catch ( SocketException& ) {}
-
+      LoginPacketIn *lipin = new LoginPacketIn(reply,reply_len);
     }
   catch ( SocketException& e )
     {

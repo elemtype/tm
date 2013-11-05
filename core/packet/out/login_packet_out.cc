@@ -35,10 +35,12 @@ void LoginPacketOut::gen_packet(){
   byte size78[]   = {0x00,0x78};
   byte s_port[]   = {0x1F,0x40};
   
-  byte i[] = {0xAC,0x13,0x69,0x02};
+  byte i[] = {0xAC,0x13,0x69,0x05};
 
   byte *t = new byte[4];
   time_byte(t);
+
+  g_crc32[5] = 0x01;   //在0826_out包里，这位是0x00，但是这里变成了0x01，不然服务器不会相应。
 
   byte plain[468];
   memcpy(plain      ,data1       ,  6 * sizeof(byte));

@@ -15,6 +15,7 @@
 #include "packet/out/logon_packet_out.h"
 #include "packet/in/logon_packet_in.h"
 #include "packet/out/login_packet_out.h"
+#include "packet/in/login_packet_in.h"
 
 //extern unsigned long id;
 
