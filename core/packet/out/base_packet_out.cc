@@ -16,6 +16,10 @@ byte* PacketOut::get_data(){
   return this->data;
 }
 
+int PacketOut::get_data_size(){
+  return this->data_size;
+}
+
 
 
 PacketOut::~PacketOut(){

@@ -9,6 +9,7 @@ class PacketOut : public Packet{
   PacketOut();
   void create_packet(byte*,byte*);
   byte *get_data();
+  int get_data_size();
   virtual ~PacketOut();
   virtual void gen_packet(){};
 };
