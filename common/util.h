@@ -42,6 +42,7 @@ string bytesToHexString(const byte *in, size_t size);
 size_t hexStringToBytes(const string &str, byte *out);
 
 void byte2ulong(byte *b,int offset,unsigned long *l);
+void byte2ulong2b(byte *b,int offset,unsigned long *l);
 
 void ulong2byte(unsigned long l,byte *b);
 

@@ -81,6 +81,27 @@ void byte2ulong(byte *b,int offset,unsigned long *l)
 	//cout << l << endl;
 }
 
+void byte2ulong2b(byte *b,int offset,unsigned long *l)
+{
+	 
+	/*
+	  一个unsigned long占32位，一个byte占8位，所以需要4个byte来填充。
+	  一个byte占8位，二进制可以表示2的8次方，一个十六进制数只能表示2的4次方，所以一个byte需要用两个十六进制数来表示。
+	  一个byte可以理解为一个unsigned char，可以表示一个ascii字符。网络中一般使用此方法传递数据。
+	*/
+
+        *l =	    (unsigned long)(b[offset + 1])      & 0x000000FF ;
+        *l = *l |  ((unsigned long)(b[offset    ])<<8   & 0x0000FF00) ;
+
+        *l = *l & 0x0000FFFF;
+	
+	/*
+	int index = offset / len;
+	memcpy(l + index, b + offset, sizeof(unsigned long));
+	*/
+	//cout << l << endl;
+}
+
 void ulong2byte(unsigned long l,byte *b)
 {
 	b[0] = (l >> 24) & 0xFF;
