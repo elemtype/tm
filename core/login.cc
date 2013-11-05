@@ -5,6 +5,7 @@ byte *g_0825_data = new byte[29];
 byte *g_key = rand_nbyte(16);
 byte *g_0825_token = new byte[0x38];
 byte *g_0826_token = new byte[0x38];
+byte *g_0826_token_1 = new byte[0x78];
 byte *g_0826_key = new byte[4];
 byte *g_0828_key_0 = new byte[4];
 byte *g_0828_key_1 = new byte[4];
@@ -60,8 +61,10 @@ int main(int argc,char **argv)
         Parse *parse = new Parse();
         parse->set_packet(reply,reply_len);
         
-        if(parse->event_command[0] == 0xEF)
-        {
+	//std::cout  << "xxxxxxxxxxxxxxxxx";
+	//pnt_byte(parse->event_command,1);
+        if(parse->event_command[0] == 0xFE)
+        { 
           RedirectPacketIn *rpin = new RedirectPacketIn(reply,reply_len);
           pnt_byte(rpin->time,4);
           pnt_byte(rpin->server_ip,4);
@@ -130,7 +133,7 @@ int main(int argc,char **argv)
 
 
       sequence[0] = 0x0B;
-      sequence[1] = 0x01;
+      sequence[1] = 0x02;
       LoginPacketOut *lipout = new LoginPacketOut(sequence);
       lipout->gen_packet();
 
@@ -138,7 +141,7 @@ int main(int argc,char **argv)
       reply_len = 0;
       try
 	{
-	  socket->send(key,499);
+	  socket->send(key,lipout->get_data_size());
           reply_len = socket->recv(reply);
         }  
       catch ( SocketException& ) {}
