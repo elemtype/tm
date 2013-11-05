@@ -46,7 +46,7 @@ LogonPacketIn::LogonPacketIn(byte *packet,int size){
   pnt_byte(g_0828_key_1,16);
   std::cout << "g_0828_key_1_end" << std::endl;
 
-  memcpy(g_0826_token_1,this->plain + 272,120 * sizeof(byte));
+  memcpy(g_0826_token_1,this->plain + 269,120 * sizeof(byte));
   std::cout << "g_0826_token_1_start" << std::endl;
   pnt_byte(g_0826_token_1,120);
   std::cout << "g_0826_token_1_end" << std::endl;
