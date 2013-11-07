@@ -4,6 +4,7 @@
 #include "util.h"
 
 extern byte *g_id;
+extern string g_password;
 extern byte *g_key;
 extern byte *g_0825_data;
 extern byte *g_0825_token;
