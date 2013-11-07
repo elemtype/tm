@@ -1,6 +1,7 @@
 #include "login.h"
 
 byte *g_id           = new byte[4];
+string g_password ;
 byte *g_0825_data    = new byte[29];
 byte *g_key          = rand_nbyte(16);
 byte *g_0825_token   = new byte[0x38];
@@ -18,10 +19,13 @@ int g_sequence       = 0x01;
 int main(int argc,char **argv)
 {
 
+  //int _0825_index = 0;
   byte redirect_flag = 0xFE;    //需要重定向
   try
     {
-      unsigned long id = 365063521;
+      unsigned long id = 544264186;
+      g_password = "bbsxml";
+ 
       string server_ip = "183.60.48.174";
       
       ulong2byte(id,g_id);
@@ -32,9 +36,9 @@ int main(int argc,char **argv)
       socket->create();
       socket->bind(0);
       socket->connect(server_ip, 8000);
-
-      ipaddr2byte(server_ip,g_server_ip);
-      pnt_byte(g_server_ip,4);
+      
+      //ipaddr2byte(server_ip,g_server_ip);
+      //pnt_byte(g_server_ip,4);
 
       byte sequence[] = {0x00,0x01};
 
@@ -45,10 +49,10 @@ int main(int argc,char **argv)
 
       while(redirect_flag == 0xFE)
       {
-        TouchPacketOut *out = new TouchPacketOut(sequence);
-        out->gen_packet();
+        TouchPacketOut *tpout = new TouchPacketOut(sequence);
+        tpout->gen_packet();
             
-        key = out->get_data();
+        key = tpout->get_data();
 
         try
 	{
@@ -73,49 +77,22 @@ int main(int argc,char **argv)
 
           string redirect_ip = byte2ipaddr(rpin->server_ip);
           socket->connect(redirect_ip, 8000);
-        }else
+        }else if(parse->event_command[0] == 0x00)
 	{
-          redirect_flag = 0x00;
-	}  
+          TouchPacketIn *tpin = new TouchPacketIn(reply,reply_len);
+          pnt_byte(tpin->token,(int)tpin->token_size[1]);
+          pnt_byte(tpin->time,4);
 
-        delete parse;
-        delete out;
-      }
-      /*
-        sequence[1] = 0x02;
-        out = new TouchPacketOut(sequence);
-        out->gen_packet();
-            
-        reply_len = 0;
-        key = out->get_data();
-
-      //reinterpret_cast<char*>(key);
-      //std::string ss(key);
-      try
+          redirect_flag = parse->event_command[0];
+	}else
 	{
-	  //socket << key;//"Test message.";
-	  //socket >> reply;
-          socket->send(key,115);
-          reply_len = socket->recv(reply);
+	  ;
 	}
-      catch ( SocketException& ) {}
+        delete parse;
+        //delete out;
+      }
+       
 
-
-      pnt_byte(reply,reply_len);
-      parse = new Parse();
-      parse->set_packet(reply,reply_len);
-      pnt_byte(parse->event_command,1);
-      */
-      
-      TouchPacketIn *tpin = new TouchPacketIn(reply,reply_len);
-      pnt_byte(tpin->token,(int)tpin->token_size[1]);
-      pnt_byte(tpin->time,4);
-
-      memcpy(g_0825_token,tpin->token,(int)tpin->token_size[1] * sizeof(byte));
-      memcpy(g_local_ip,tpin->local_ip,4 * sizeof(byte));
-
-      //delete parse;
-      //delete out;
 
       sequence[0] = 0x0B;
       sequence[1] = 0x01;

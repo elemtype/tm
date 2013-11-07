@@ -26,7 +26,9 @@ RedirectPacketIn::RedirectPacketIn(byte *packet,int size){
 
   CRYPTER *crpyter = new CRYPTER(g_key);	
   int l = crpyter->decrypt(this->data,this->data_size,this->plain);
+  std::cout << "redirect_packet_in_start" << std::endl;
   pnt_byte(this->plain,l);
+  std::cout << "redirect_packet_in_end" << std::endl;
 
   event = new byte[1];
   memcpy(this->event,this->plain,1 * sizeof(byte));

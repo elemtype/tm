@@ -40,10 +40,10 @@ void LogonPacketOut::gen_packet(){
   pnt_byte(g_0826_key,16);
   std::cout << "g_0826_key_end" << std::endl;
 
-  string pswd = "elemtype";
+  //string g_password = "elemtype";
   //unsigned char* d = (unsigned char*)(pswd.c_str());
   unsigned char md5[16];
-  MD5((unsigned char*)(pswd.c_str()),strlen(pswd.c_str()),md5);
+  MD5((unsigned char*)(g_password.c_str()),strlen(g_password.c_str()),md5);
 
   //以下104个字节，使用MD5(MD5(密码) + 00000000 + ID)加密
   byte plain_120[104];
@@ -106,7 +106,6 @@ void LogonPacketOut::gen_packet(){
   //std::cout << crypt_size << std::endl;
   //// // pnt_byte(crypt_120,crypt_size);
   delete crpyter;
-
 
   byte *plain = new byte[443];
   memcpy(plain      ,data1       ,  2 * sizeof(byte));
